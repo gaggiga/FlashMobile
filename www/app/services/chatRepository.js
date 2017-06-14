@@ -1,6 +1,12 @@
-angular.module('starter.services', [])
+(function(){
 
-.factory('Chats', function() {
+angular
+  .module('app.services')
+  .factory('app.services.ChatRepository', ChatRepository);
+  
+ChatRepository.$inject = [];
+
+function ChatRepository() {
   // Might use a resource here that returns a JSON array
 
   // Some fake testing data
@@ -32,19 +38,26 @@ angular.module('starter.services', [])
   }];
 
   return {
-    all: function() {
-      return chats;
-    },
-    remove: function(chat) {
-      chats.splice(chats.indexOf(chat), 1);
-    },
-    get: function(chatId) {
-      for (var i = 0; i < chats.length; i++) {
-        if (chats[i].id === parseInt(chatId)) {
-          return chats[i];
-        }
-      }
-      return null;
-    }
+    all: all, 
+    remove: remove,
+    get: get
   };
-});
+
+  function all() {
+    return chats;
+  }
+
+  function remove(chat) {
+    chats.splice(chats.indexOf(chat), 1);
+  }
+
+  function get(chatId) {
+    for (var i = 0; i < chats.length; i++) {
+      if (chats[i].id === parseInt(chatId)) {
+        return chats[i];
+      }
+    }
+    return null;
+  }
+}
+})();
