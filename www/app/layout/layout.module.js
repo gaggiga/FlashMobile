@@ -13,7 +13,8 @@ function config($stateProvider) {
       views: {
         'tab-dash': {
           templateUrl: 'app/layout/dash.html',
-          controller: 'app.layout.Dash'
+          controller: 'app.layout.Dash',
+          controllerAs: 'vm'
         }
       }
     })

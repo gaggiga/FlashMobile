@@ -1,17 +1,36 @@
 <ion-view view-title="Dashboard">
   <ion-content class="padding">
-    <h2>Welcome to Ionic</h2>
+    <h2>Benvenuto in Flash Mob(ile)</h2>
     <p>
-    This is the Ionic starter for tabs-based apps. For other starters and ready-made templates, check out the <a href="http://market.ionic.io/starters" target="_blank">Ionic Market</a>.
+      Flash Mob(ile) è un'applicazione di messaggistica GRATUITA disponibile per Android e altri smartphone. Flash Mob(ile) usa la connessione 
+      internet del telefono (4G/3G/2G/EDGE o Wi-Fi, a seconda della disponibilità) per consentirti di messaggiare e chiamare amici e famigliari.
+      Passa da WhatsApp a Flash Mob(ile) per inviare e ricevere messaggi, chiamate, foto, video, documenti e messaggi vocali. 
     </p>
-    <p>
-      To edit the content of each tab, edit the corresponding template file in <code>www/templates/</code>. This template is <code>www/templates/tab-dash.html</code>
-    </p>
-    <p>
-    If you need help with your app, join the Ionic Community on the <a href="http://forum.ionicframework.com" target="_blank">Ionic Forum</a>. Make sure to <a href="http://twitter.com/ionicframework" target="_blank">follow us</a> on Twitter to get important updates and announcements for Ionic developers.
-    </p>
-    <p>
-      <b>Psst!</b> - Try <a href="http://view.ionic.io/">Ionic View</a> to easily share and test your app with clients and co-workers.
-    </p>
+    <br/><br/>
+    <div>
+      <h3 ng-hide="vm.settings.isRegistrato">Questo dispositivo deve essere registrato.</h3>
+      <p ng-hide="vm.settings.isRegistrato">
+        Premendo il pulsante verrà registrato usando le seguenti informazioni:
+      </p>
+      <p ng-show="vm.settings.isRegistrato">
+        Questo dispositivo risulta registrato con le seguenti informazioni:
+      </p>            
+      <ul class="list">
+        <li class="item item-icon-left">
+          <i class="icon ion-ios-telephone-outline"></i>
+          CallerId:<strong>{{vm.settings.callerId}}</strong>
+        </li>
+        <li class="item item-icon-left">
+          <i class="icon ion-person-stalker"></i>
+          DeviceId:<strong>{{vm.settings.deviceId}}</strong>
+        </li>
+      </ul>      
+      <button class="button button-full button-positive" 
+              ng-hide="vm.settings.isRegistrato"
+              ng-click="vm.registrati()">Registrati</button>
+      <button class="button button-full button-positive" 
+              ng-show="vm.settings.isRegistrato"
+              ng-click="vm.rimuovi()">Rimuovi registrazione</button>              
+    </div>
   </ion-content>
 </ion-view>

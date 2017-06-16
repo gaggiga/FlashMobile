@@ -2,6 +2,8 @@
 
 angular.module('app', [
   'ionic', 
+  'ngCordova',
+  'LocalForageModule',
   'app.chat', 
   'app.layout',
   'app.services'])
@@ -26,20 +28,28 @@ function run($ionicPlatform) {
   });
 }
 
-config.$inject = ['$stateProvider', '$urlRouterProvider'];
+config.$inject = ['$stateProvider', '$urlRouterProvider', '$localForageProvider'];
 
-function config($stateProvider, $urlRouterProvider) {
+function config($stateProvider, $urlRouterProvider, $localForageProvider) {
 
   $stateProvider
     // setup an abstract state for the tabs directive
     .state('tab', {
       url: '/tab',
       abstract: true,
-      templateUrl: 'app/layout/tabs.html'
+      templateUrl: 'app/layout/tabs.html',
+      controller: 'app.layout.Tabs',
+      controllerAs:'tabs'
     });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise('/tab/dash');    
+  
+  $localForageProvider.config({
+        driver      : ['asyncStorage', 'webSQLStorage', 'localStorageWrapper'], 
+        name        : 'MyLocalForageDbName', 
+        size        : 200*1024*1024
+    });
 }
 
 })();
