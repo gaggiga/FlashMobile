@@ -6,7 +6,8 @@ angular.module('app', [
   'LocalForageModule',
   'app.chat', 
   'app.layout',
-  'app.services'])
+  'app.services',
+  'app.widgets'])
 .run(run)
 .config(config);
 

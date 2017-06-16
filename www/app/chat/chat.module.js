@@ -23,7 +23,8 @@ function config($stateProvider) {
       views: {
         'tab-chats': {
           templateUrl: 'app/chat/chatDetail.html',
-          controller: 'app.chat.ChatDetail'
+          controller: 'app.chat.ChatDetail',
+          controllerAs:'vm'
         }
       }
     });

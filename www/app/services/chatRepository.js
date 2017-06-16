@@ -55,7 +55,8 @@ function ChatRepository($q, serverManager, $localForage) {
             name: nome,
             callerIndentifiers: data.callerIndentifiers,
             lastText: '',
-            face: foto
+            face: foto,
+            messages: []
           };
 
           chats.push(chat);
