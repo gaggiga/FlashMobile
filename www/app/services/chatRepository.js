@@ -4,44 +4,32 @@ angular
   .module('app.services')
   .factory('app.services.ChatRepository', ChatRepository);
   
-ChatRepository.$inject = [];
+ChatRepository.$inject = ['$q', 'app.services.serverManager', '$localForage'];
 
-function ChatRepository() {
-  // Might use a resource here that returns a JSON array
+function ChatRepository($q, serverManager, $localForage) {
 
-  // Some fake testing data
-  var chats = [{
-    id: 0,
-    name: 'Ben Sparrow',
-    lastText: 'You on your way?',
-    face: 'img/ben.png'
-  }, {
-    id: 1,
-    name: 'Max Lynx',
-    lastText: 'Hey, it\'s me',
-    face: 'img/max.png'
-  }, {
-    id: 2,
-    name: 'Adam Bradleyson',
-    lastText: 'I should buy a boat',
-    face: 'img/adam.jpg'
-  }, {
-    id: 3,
-    name: 'Perry Governor',
-    lastText: 'Look at my mukluks!',
-    face: 'img/perry.png'
-  }, {
-    id: 4,
-    name: 'Mike Harrington',
-    lastText: 'This is wicked good ice cream.',
-    face: 'img/mike.png'
-  }];
+  var chats = [];
 
   return {
+    init: init,
+    refresh: refresh,
     all: all, 
     remove: remove,
-    get: get
+    get: get,
+    add: add
   };
+
+  function init(){
+    return $localForage.getItem('chats').then(function(data) {
+        if(data){
+          chats = data;
+        }       
+      });          
+  }
+
+  function refresh(){   
+    return serverManager.getChats().then(save);      
+  }
 
   function all() {
     return chats;
@@ -53,11 +41,40 @@ function ChatRepository() {
 
   function get(chatId) {
     for (var i = 0; i < chats.length; i++) {
-      if (chats[i].id === parseInt(chatId)) {
+      if (chats[i].id === chatId) {
         return chats[i];
       }
     }
     return null;
+  }
+
+  function add(contattoId, nome, foto){
+      return serverManager.newChat(contattoId).then(function(data){
+          var chat = {
+            id: data.id,
+            name: nome,
+            callerIndentifiers: data.callerIndentifiers,
+            lastText: '',
+            face: foto
+          };
+
+          chats.push(chat);
+          save(chats);       
+          return chat;   
+      });    
+  }
+
+  function save(chats){
+    return $q(function(resolve, reject){
+      $localForage.setItem('chats', chats).then(
+          function(){
+            return $localForage.getItem('chats').then(function(data) {
+                chats = data;
+                resolve();
+            });        
+          }
+        )
+    });         
   }
 }
 })();

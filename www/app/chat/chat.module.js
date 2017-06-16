@@ -13,7 +13,8 @@ function config($stateProvider) {
       views: {
         'tab-chats': {
           templateUrl: 'app/chat/chats.html',
-          controller: 'app.chat.Chats'
+          controller: 'app.chat.Chats',
+          controllerAs: 'vm'
         }
       }
     })

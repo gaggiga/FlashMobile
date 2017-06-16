@@ -4,11 +4,13 @@ angular
   .module('app.services')
   .factory('app.services.serverManager', serverManager);
   
-serverManager.$inject = ['app.services.Settings', '$http'];
+serverManager.$inject = ['app.services.Settings', '$http', '$q'];
 
-function serverManager(Settings, $http) {
+function serverManager(Settings, $http, $q) {
 
   var manager = {
+      getChats: getChats,
+      newChat: newChat,
       addDevice: addDevice
   };
 
@@ -19,6 +21,17 @@ function serverManager(Settings, $http) {
                 deviceIdentifier: Settings.deviceId, 
                 callerIdentifier: Settings.callerId
             }).then(Settings.setRegistrato, errorCallback);
+  }
+
+  function getChats(){
+    // TODO: Ottenere le chat per il callerIdentifier
+    return $q(function(resolve, reject){ resolve([]); });
+  }
+
+  function newChat(contattoId){
+    // TODO    
+    //return formPost(Settings.serverURI + "api/chat/create", [Settings.callerId, contattoId]);    
+    return $q(function(resolve, reject){ resolve({ id: guid(), callerIndentifiers: [Settings.callerId, contattoId] }); });
   }
 
   function errorCallback(err){
@@ -39,6 +52,16 @@ function serverManager(Settings, $http) {
             },            
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}        
         });
+  }
+
+  function guid() {
+    function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+      s4() + '-' + s4() + s4() + s4();
   }
 }
 })();

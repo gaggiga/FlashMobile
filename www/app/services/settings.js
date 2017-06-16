@@ -25,7 +25,7 @@ function Settings($q, $timeout, $cordovaDevice, simPlugin, $localForage) {
 
   function init(){
     document.addEventListener("deviceready", onDeviceReady, false);
-
+    
     return $q(function(resolve, reject){
         $localForage.getItem('stato').then(function(stato){
           if(stato){
@@ -50,7 +50,10 @@ function Settings($q, $timeout, $cordovaDevice, simPlugin, $localForage) {
   function onDeviceReady(){
       mySettings.deviceId = $cordovaDevice.getUUID(); 
 
-      if($cordovaDevice.getPlatform() == "Android"){
+      if($cordovaDevice.getDevice().isVirtual){
+        mySettings.isRegistrato = true;  
+        mySettings.callerId = "123456";      
+      } else if($cordovaDevice.getPlatform() == "Android"){
         simPlugin.hasReadPermission().then(
           function(info){
             if(!info){
